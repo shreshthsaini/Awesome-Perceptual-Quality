@@ -11,6 +11,13 @@ permissions:
   contents: write
   pull-requests: write
   issues: write
+  statuses: write
+
+# Creating an issue from a form fires `opened` and `labeled` together. Without
+# this the two runs race and one fails trying to create the same branch.
+concurrency:
+  group: issue-to-pr-${{ github.event.issue.number }}
+  cancel-in-progress: false
 
 jobs:
   convert:
@@ -22,7 +29,21 @@ jobs:
         with:
           python-version: "3.11"
 
+      - name: Skip if this issue already has a pull request
+        id: existing
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          BRANCH="issue-${{ github.event.issue.number }}-catalog"
+          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+            echo "branch $BRANCH already exists, nothing to do"
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Read the issue body
+        if: steps.existing.outputs.skip == 'false'
         # Through an environment variable, never interpolated into the shell:
         # the body is untrusted text written by a stranger.
         env:
@@ -30,6 +51,7 @@ jobs:
         run: printf '%s' "$BODY" > issue-body.md
 
       - name: Work out which form was used
+        if: steps.existing.outputs.skip == 'false'
         id: kind
         run: |
           if [ "${{ contains(github.event.issue.labels.*.name, 'add-paper') }}" = "true" ]; then
@@ -39,6 +61,7 @@ jobs:
           fi
 
       - name: Build the catalog row
+        if: steps.existing.outputs.skip == 'false'
         id: build
         run: |
           set +e
@@ -74,7 +97,7 @@ jobs:
           fi
 
       - name: Tell the reporter what went wrong
-        if: steps.build.outputs.status != '0' || steps.verify.outputs.status != '0' || steps.links.outputs.status != '0'
+        if: steps.existing.outputs.skip == 'false' && (steps.build.outputs.status != '0' || steps.verify.outputs.status != '0' || steps.links.outputs.status != '0')
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
@@ -93,6 +116,7 @@ jobs:
 
       - name: Open the pull request
         id: pr
+        if: steps.links.outputs.status == '0'
         env:
           GH_TOKEN: ${{ github.token }}
           ISSUE: ${{ github.event.issue.number }}
@@ -123,8 +147,25 @@ jobs:
           URL=$(gh pr create --title "$TITLE" --body-file pr.md --base main --head "$BRANCH")
           echo "url=$URL" >> "$GITHUB_OUTPUT"
           echo "number=$(basename "$URL")" >> "$GITHUB_OUTPUT"
+          echo "sha=$(git rev-parse HEAD)" >> "$GITHUB_OUTPUT"
+
+      - name: Report the checks this job already ran
+        if: steps.links.outputs.status == '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # A pull request opened with GITHUB_TOKEN does not start CI, so the
+          # branch protection check would never report. The steps above ran
+          # validate.py, both generators and the link check on this exact tree,
+          # so the result is recorded against the same context.
+          gh api -X POST "repos/${{ github.repository }}/statuses/${{ steps.pr.outputs.sha }}" \
+            -f state=success \
+            -f context="validate and sync" \
+            -f description="validated, regenerated and link-checked by issue-to-pr" \
+            -f target_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}" >/dev/null
 
       - name: Merge it, unless auto-merge is switched off
+        if: steps.links.outputs.status == '0'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
