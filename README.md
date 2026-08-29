@@ -5,7 +5,7 @@
 **Metrics, models, and subjective datasets for how images and video actually look to people.**
 
 [![Awesome](https://awesome.re/badge-flat2.svg)](https://awesome.re)
-![Methods](https://img.shields.io/badge/methods-113-1f6feb?style=flat-square)
+![Methods](https://img.shields.io/badge/methods-114-1f6feb?style=flat-square)
 ![Datasets](https://img.shields.io/badge/datasets-63-8250df?style=flat-square)
 ![UGC](https://img.shields.io/badge/UGC%20tagged-41-1a7f37?style=flat-square)
 ![HDR](https://img.shields.io/badge/HDR%20tagged-25-bf3989?style=flat-square)
@@ -67,11 +67,11 @@ Either way it is welcome, including your own papers. Saying you are an author ju
   - [HDR](#hdr) (10) &nbsp;·&nbsp; high dynamic range, wide gamut, UGC HDR
   - [Video](#video) (24) &nbsp;·&nbsp; UGC, streaming, gaming, compression
   - [Image](#image) (20) &nbsp;·&nbsp; synthetic distortion, in-the-wild, aesthetics
-- **[Methods](#methods)** (113)
+- **[Methods](#methods)** (114)
   - [Multimodal and reasoning](#multimodal-and-reasoning) (23) &nbsp;·&nbsp; MLLM scorers, RL-trained reasoning, benchmarks
   - [HDR](#hdr-1) (15) &nbsp;·&nbsp; PU encodings, VDP family, HDR UGC models
   - [Video](#video-1) (26) &nbsp;·&nbsp; full-reference, blind UGC, efficient samplers
-  - [No-reference image](#no-reference-image) (29) &nbsp;·&nbsp; NSS, CNN, transformer, CLIP
+  - [No-reference image](#no-reference-image) (30) &nbsp;·&nbsp; NSS, CNN, transformer, CLIP
   - [Full-reference image](#full-reference-image) (20) &nbsp;·&nbsp; classical indices, learned perceptual distances
 - **[Challenges](#challenges)** (8) &nbsp;·&nbsp; NTIRE, AIM, AIS, CLIC, ICME, VQEG
 - **[Surveys](#surveys)** (7)
@@ -280,6 +280,7 @@ Blind scoring, which is what most deployments need since the reference is rarely
 | Method | Paper | Venue | Tags | Code |
 | :--- | :--- | :---: | :--- | :---: |
 | **FGResQ** | [Fine-grained Image Quality Assessment for Perceptual Image Restoration](https://arxiv.org/abs/2508.14475)<br /><sub>Fine-grained NR-IQA model with the FGRestore dataset, targeting restored-image quality</sub> | AAAI 2026 | ![IQA](https://img.shields.io/badge/IQA-1f6feb?style=flat-square&labelColor=1f6feb) `NR` `DEEP` | [![Stars](https://img.shields.io/github/stars/sxfly99/FGResQ?style=flat-square&label=%E2%98%85&color=57606a)](https://github.com/sxfly99/FGResQ) |
+| **PipelineTest-DELETEME** | [VisualQuality-R1: Reasoning-Induced Image Quality Assessment via Reinforcement Learning to Rank](https://arxiv.org/abs/2505.14460)<br /><sub>Temporary row created to verify the issue to pull request automation</sub> | arXiv 2025 | ![IQA](https://img.shields.io/badge/IQA-1f6feb?style=flat-square&labelColor=1f6feb) `NR` `DEEP` | - |
 | **ARNIQA** | [ARNIQA: Learning Distortion Manifold for Image Quality Assessment](https://arxiv.org/abs/2310.14918)<br /><sub>Self-supervised contrastive encoder learns a distortion manifold for blind scoring</sub> | WACV 2024 | ![IQA](https://img.shields.io/badge/IQA-1f6feb?style=flat-square&labelColor=1f6feb) `NR` `DEEP` | [![Stars](https://img.shields.io/github/stars/miccunifi/ARNIQA?style=flat-square&label=%E2%98%85&color=57606a)](https://github.com/miccunifi/ARNIQA) |
 | **BIQA-CL** | [Task-Specific Normalization for Continual Learning of Blind Image Quality Models](https://arxiv.org/abs/2102.09717)<br /><sub>Continual learning across IQA datasets via task-specific batch normalisation</sub> | TIP 2024 | ![IQA](https://img.shields.io/badge/IQA-1f6feb?style=flat-square&labelColor=1f6feb) `NR` `DEEP` | [![Stars](https://img.shields.io/github/stars/zwx8981/BIQA_CL?style=flat-square&label=%E2%98%85&color=57606a)](https://github.com/zwx8981/BIQA_CL) |
 | **GRepQ** | [Learning Generalizable Perceptual Representations for Data-Efficient No-Reference IQA](https://arxiv.org/abs/2312.04838)<br /><sub>Self-supervised CLIP encoders contrast quality groups for few-shot NR-IQA</sub> | WACV 2024 | ![IQA](https://img.shields.io/badge/IQA-1f6feb?style=flat-square&labelColor=1f6feb) `NR` `CLIP` | [![Stars](https://img.shields.io/github/stars/suhas-srinath/GRepQ?style=flat-square&label=%E2%98%85&color=57606a)](https://github.com/suhas-srinath/GRepQ) |
