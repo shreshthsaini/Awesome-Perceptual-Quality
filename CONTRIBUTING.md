@@ -41,7 +41,7 @@ Borderline cases are fine to submit. Say why you think it fits and we will discu
 | `year` | Four digits. Use the year of the venue, or of first arXiv posting if unpublished. |
 | `venue` | Short form: `TIP`, `CVPR`, `NeurIPS`, `arXiv`. |
 | `paper_url` | Prefer the arXiv abstract page or the official proceedings page. HTTPS only. |
-| `code_url` | Author-maintained repository. Leave blank if none is public rather than linking a reimplementation. |
+| `code_url` | Author-maintained repository. A GitHub link renders as a live star badge. Leave blank if none is public rather than linking a reimplementation. |
 | `data_url` | Download or project page for a dataset. |
 | `content` | Dataset scale, for example `10,073 images` or `39,000 videos`. |
 | `annotations` | Rating count or protocol, for example `1.2M ratings`. Leave blank if you cannot confirm it. |
@@ -53,7 +53,7 @@ Leave a field blank rather than guessing. An empty cell is honest; an invented n
 
 ### Tag vocabulary
 
-Primary, shown as coloured badges: `IQA` `VQA` `UGC` `HDR`
+Primary, shown as coloured emoji in the tables: 🔴 `HDR`  🟢 `UGC`  🟣 `VQA`  🔵 `IQA`
 
 Modifiers: `FR` `NR` `RR` `PU` `CLASSICAL` `DEEP` `CLIP` `TRANSFORMER` `MLLM` `RL` `REASONING` `BENCHMARK` `SYNTHETIC` `AUTHENTIC` `AIGC` `AESTHETIC` `STREAMING` `GAMING` `COMPRESSION`
 
@@ -61,9 +61,9 @@ Modifiers: `FR` `NR` `RR` `PU` `CLASSICAL` `DEEP` `CLIP` `TRANSFORMER` `MLLM` `R
 
 ### Categories
 
-`data/methods.csv`: `fr-iqa`, `nr-iqa`, `vqa`, `hdr`, `mllm`
+`data/methods.csv`: `hdr`, `vqa`, `nr-iqa`, `fr-iqa`, `mllm` (tables render in that order)
 
-`data/datasets.csv`: `image`, `video`, `hdr`
+`data/datasets.csv`: `hdr`, `video`, `image` (tables render in that order)
 
 A paper sits in exactly one category, the table where a reader would look for it first. Cross-cutting membership is what tags are for: an HDR video quality model belongs in `hdr` with tags `HDR VQA`.
 

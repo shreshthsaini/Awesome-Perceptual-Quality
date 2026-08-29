@@ -23,10 +23,10 @@ Four tags run through everything, and most entries carry more than one:
 
 | Tag | Meaning |
 | :--- | :--- |
-| ![IQA](https://img.shields.io/badge/IQA-1f6feb?style=flat-square&labelColor=1f6feb) | Still image quality |
-| ![VQA](https://img.shields.io/badge/VQA-8250df?style=flat-square&labelColor=8250df) | Video quality |
-| ![UGC](https://img.shields.io/badge/UGC-1a7f37?style=flat-square&labelColor=1a7f37) | User-generated content, authentic rather than simulated distortion |
-| ![HDR](https://img.shields.io/badge/HDR-bf3989?style=flat-square&labelColor=bf3989) | High dynamic range, wide gamut, high bit depth |
+| 🔴 `HDR` | High dynamic range, wide gamut, high bit depth |
+| 🟢 `UGC` | User-generated content, authentic rather than simulated distortion |
+| 🟣 `VQA` | Video quality |
+| 🔵 `IQA` | Still image quality |
 
 Modifier tags narrow things further: `FR` and `NR` for reference availability, `MLLM` for language-model-based scorers, `AIGC` for generated-content quality, `SYNTHETIC` and `AUTHENTIC` for how distortions arose, plus `GAMING`, `STREAMING`, and `COMPRESSION`.
 
@@ -41,14 +41,14 @@ This catalog puts image, video, UGC, and HDR in one place, tags each entry along
 ## Contents
 
 - [Datasets](#datasets)
-  - [Image quality datasets](#image-quality-datasets)
-  - [Video quality datasets](#video-quality-datasets)
   - [HDR quality datasets](#hdr-quality-datasets)
+  - [Video quality datasets](#video-quality-datasets)
+  - [Image quality datasets](#image-quality-datasets)
 - [Methods](#methods)
-  - [Full-reference image quality](#full-reference-image-quality)
-  - [No-reference image quality](#no-reference-image-quality)
-  - [Video quality](#video-quality)
   - [HDR quality](#hdr-quality)
+  - [Video quality](#video-quality)
+  - [No-reference image quality](#no-reference-image-quality)
+  - [Full-reference image quality](#full-reference-image-quality)
   - [MLLM and reasoning-based quality](#mllm-and-reasoning-based-quality)
 - [Toolboxes](#toolboxes)
 - [Challenges](#challenges)
@@ -61,9 +61,9 @@ This catalog puts image, video, UGC, and HDR in one place, tags each entry along
 
 Subjective studies and benchmarks. Blank cells mean the number is not reliably documented, not that it is zero.
 
-### Image quality datasets
+### HDR quality datasets
 
-<!-- AUTOGEN:datasets:image -->
+<!-- AUTOGEN:datasets:hdr -->
 <!-- /AUTOGEN -->
 
 ### Video quality datasets
@@ -71,41 +71,41 @@ Subjective studies and benchmarks. Blank cells mean the number is not reliably d
 <!-- AUTOGEN:datasets:video -->
 <!-- /AUTOGEN -->
 
-### HDR quality datasets
+### Image quality datasets
 
-<!-- AUTOGEN:datasets:hdr -->
+<!-- AUTOGEN:datasets:image -->
 <!-- /AUTOGEN -->
 
 ---
 
 ## Methods
 
+### HDR quality
+
+High dynamic range content, where luminance range and bit depth change what the distortions even look like.
+
+<!-- AUTOGEN:methods:hdr -->
+<!-- /AUTOGEN -->
+
+### Video quality
+
+Temporal quality, including the UGC setting where authentic distortions stack on top of each other.
+
+<!-- AUTOGEN:methods:vqa -->
+<!-- /AUTOGEN -->
+
+### No-reference image quality
+
+Blind metrics that score an image on its own. What most real deployments need, since the reference is rarely available.
+
+<!-- AUTOGEN:methods:nr-iqa -->
+<!-- /AUTOGEN -->
+
 ### Full-reference image quality
 
 Metrics with access to a pristine reference.
 
 <!-- AUTOGEN:methods:fr-iqa -->
-<!-- /AUTOGEN -->
-
-### No-reference image quality
-
-Blind metrics that score an image on its own. This is what most real deployments need, since the reference is rarely available.
-
-<!-- AUTOGEN:methods:nr-iqa -->
-<!-- /AUTOGEN -->
-
-### Video quality
-
-Temporal quality, including the UGC setting where distortions are authentic and stack on top of each other.
-
-<!-- AUTOGEN:methods:vqa -->
-<!-- /AUTOGEN -->
-
-### HDR quality
-
-Metrics and models for high dynamic range content, where luminance range and bit depth change what distortions look like.
-
-<!-- AUTOGEN:methods:hdr -->
 <!-- /AUTOGEN -->
 
 ### MLLM and reasoning-based quality

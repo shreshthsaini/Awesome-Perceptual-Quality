@@ -14,16 +14,20 @@ DATA = ROOT / "data"
 TEMPLATE = ROOT / "README.template.md"
 README = ROOT / "README.md"
 
-METHOD_CATEGORIES = ["fr-iqa", "nr-iqa", "vqa", "hdr", "mllm"]
-DATASET_CATEGORIES = ["image", "video", "hdr"]
+METHOD_CATEGORIES = ["hdr", "vqa", "nr-iqa", "fr-iqa", "mllm"]
+DATASET_CATEGORIES = ["hdr", "video", "image"]
 
-# Primary tags get a coloured badge; the rest render as plain code spans.
-TAG_COLORS = {
-    "IQA": "1f6feb",
-    "VQA": "8250df",
-    "UGC": "1a7f37",
-    "HDR": "bf3989",
+# Primary tags render as emoji rather than shields images. With ~180 rows the
+# badge version meant hundreds of image requests per page load; emoji cost none
+# and still colour-code at a glance. Image badges are reserved for star counts,
+# which genuinely have to be fetched.
+TAG_EMOJI = {
+    "HDR": "\U0001F534",   # red circle
+    "UGC": "\U0001F7E2",   # green circle
+    "VQA": "\U0001F7E3",   # purple circle
+    "IQA": "\U0001F535",   # blue circle
 }
+TAG_ORDER = ["HDR", "UGC", "VQA", "IQA"]
 
 
 def read(name):
@@ -35,16 +39,26 @@ def read(name):
 
 
 def tag_cell(tags):
-    out = []
-    for tag in (tags or "").split():
-        color = TAG_COLORS.get(tag.upper())
-        if color:
-            out.append(
-                f"![{tag}](https://img.shields.io/badge/{tag}-{color}?style=flat-square&labelColor={color})"
+    """Primary tags first as coloured emoji, then modifiers as code spans."""
+    have = (tags or "").split()
+    primary = [f"{TAG_EMOJI[t]} {t}" for t in TAG_ORDER if t in have]
+    rest = [f"`{t}`" for t in have if t not in TAG_EMOJI]
+    return " ".join(primary + rest)
+
+
+def stars_cell(url):
+    """A live star badge when the link is a GitHub repo, a plain link otherwise."""
+    url = (url or "").strip()
+    if not url:
+        return ""
+    if url.startswith("https://github.com/"):
+        slug = "/".join(url.rstrip("/").removeprefix("https://github.com/").split("/")[:2])
+        if slug.count("/") == 1:
+            return (
+                f"[![Stars](https://img.shields.io/github/stars/{slug}"
+                f"?style=flat-square&label=%E2%98%85&color=57606a)]({url})"
             )
-        else:
-            out.append(f"`{tag}`")
-    return " ".join(out) if out else ""
+    return f"[link]({url})"
 
 
 def link(text, url):
@@ -75,7 +89,7 @@ def methods_table(rows):
             paper = f"{paper}<br /><sub>{note}</sub>" if paper else f"<sub>{note}</sub>"
         body.append(
             f"| **{r.get('name','')}** | {paper} | {venue} | "
-            f"{tag_cell(r.get('tags'))} | {link('code', r.get('code_url')) or ''} |"
+            f"{tag_cell(r.get('tags'))} | {stars_cell(r.get('code_url'))} |"
         )
     return head + "\n".join(body) if body else head + "| | *no entries yet* | | | |"
 
@@ -88,7 +102,9 @@ def datasets_table(rows):
     body = []
     for r in sorted(rows, key=sort_key):
         venue = " ".join(x for x in [r.get("venue", ""), r.get("year", "")] if x)
-        links = " / ".join(x for x in [link("paper", r.get("paper_url")), link("data", r.get("data_url"))] if x)
+        data_url = (r.get("data_url") or "").strip()
+        data_cell = stars_cell(data_url) if data_url.startswith("https://github.com/") else link("data", data_url)
+        links = " ".join(x for x in [link("paper", r.get("paper_url")), data_cell] if x)
         note = r.get("note", "").strip()
         name = f"**{r.get('name','')}**"
         if note:
