@@ -2,6 +2,14 @@
 
 Thanks for helping keep this catalog current. Contributions are welcome from anyone, including authors adding their own work.
 
+## Three ways in
+
+1. **[Open an issue](https://github.com/shreshthsaini/Awesome-Perceptual-Quality/issues/new/choose).** Fill in a form and a bot does the rest: it builds the row, validates it, checks the links, regenerates the tables and opens the pull request. Best for one or two entries.
+2. **Open a pull request.** Edit `data/*.csv`, run the two scripts, commit both. Best for several entries at once.
+3. **Just tell us.** A plain issue describing what is missing or wrong is fine too. Someone will pick it up.
+
+Catalog-only pull requests merge automatically once checks pass, so a good submission does not sit waiting on anyone.
+
 ## The one rule that matters
 
 **Do not edit `README.md`.** It is generated. Every table comes from the CSV files in `data/`, and a pull request that edits the README directly will be closed with a pointer back here.

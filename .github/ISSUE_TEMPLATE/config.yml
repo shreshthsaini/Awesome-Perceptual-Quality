@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Add several entries at once
+    url: https://github.com/shreshthsaini/Awesome-Perceptual-Quality/blob/main/CONTRIBUTING.md
+    about: For more than a couple of rows, edit data/*.csv directly and open a pull request. Conventions are in CONTRIBUTING.
+  - name: Ask something
+    url: https://github.com/shreshthsaini/Awesome-Perceptual-Quality/discussions
+    about: Questions about scope, tagging, or whether something belongs here.

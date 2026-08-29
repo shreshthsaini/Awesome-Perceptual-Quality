@@ -1,0 +1,55 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+# Read-only. Nothing here needs to write, and pull requests from forks should
+# never get a write token.
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: validate and sync
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate catalog
+        run: python3 scripts/validate.py
+
+      - name: README and figure are in sync with data/
+        run: |
+          python3 scripts/generate_readme.py
+          python3 scripts/generate_figure.py
+          if ! git diff --quiet -- README.md assets/landscape.svg; then
+            echo "::error::README.md or assets/landscape.svg is stale. Run scripts/generate_readme.py and scripts/generate_figure.py, then commit the result."
+            git --no-pager diff --stat -- README.md assets/landscape.svg
+            exit 1
+          fi
+          echo "generated files match the catalog"
+
+      - name: Check only the links this pull request adds
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          # Pre-existing link rot is the weekly job's problem. A contributor
+          # should only ever be blocked by a link they themselves added.
+          NEW=$(git diff "$BASE_SHA"...HEAD -- 'data/*.csv' \
+                | grep '^+' | grep -v '^+++' \
+                | grep -oE 'https://[^,"[:space:]]+' | sort -u || true)
+          if [ -z "$NEW" ]; then
+            echo "no new links in this pull request"
+            exit 0
+          fi
+          echo "checking:"; echo "$NEW" | sed 's/^/  /'
+          python3 scripts/check_links.py --timeout 25 --workers 4 --urls $NEW

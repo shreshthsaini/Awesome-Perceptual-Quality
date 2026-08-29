@@ -66,9 +66,18 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--timeout", type=int, default=20)
     ap.add_argument("--workers", type=int, default=8)
+    ap.add_argument(
+        "--urls",
+        nargs="*",
+        help="Check only these URLs instead of the whole catalog. Pull requests use "
+             "this so a contributor is never blocked by pre-existing link rot.",
+    )
     args = ap.parse_args()
 
-    items = collect()
+    items = [(u, "pull request") for u in args.urls] if args.urls else collect()
+    if args.urls is not None and not items:
+        print("no new URLs to check")
+        return
     print(f"checking {len(items)} unique URLs...")
     bad, unverified = [], []
     with ThreadPoolExecutor(max_workers=args.workers) as pool:

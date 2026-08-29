@@ -1,0 +1,84 @@
+name: Add a paper
+description: Suggest a metric, model or algorithm. No git needed; filling this in opens a pull request for you.
+title: "Add paper: "
+labels: ["add-paper"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Fill this in and a bot opens the pull request for you. Own work is welcome; just say so at the bottom.
+        Leave a field blank if you cannot confirm it. A blank cell is fine, a guessed one is not.
+  - type: input
+    id: name
+    attributes:
+      label: Short name
+      description: The handle people use, not the full title. For example BRISQUE, FAST-VQA.
+      placeholder: BRISQUE
+    validations: {required: true}
+  - type: input
+    id: title
+    attributes:
+      label: Paper title
+      placeholder: No-Reference Image Quality Assessment in the Spatial Domain
+    validations: {required: true}
+  - type: input
+    id: year
+    attributes:
+      label: Year
+      description: Four digits. Venue year, or first arXiv posting if unpublished.
+      placeholder: "2012"
+    validations: {required: true}
+  - type: input
+    id: venue
+    attributes:
+      label: Venue
+      description: Short form. TIP, CVPR, NeurIPS, arXiv.
+      placeholder: TIP
+    validations: {required: true}
+  - type: input
+    id: paper_url
+    attributes:
+      label: Paper link
+      description: arXiv abstract page or official proceedings page. Must be https.
+      placeholder: https://arxiv.org/abs/2207.02595
+    validations: {required: true}
+  - type: input
+    id: code_url
+    attributes:
+      label: Code link
+      description: Author-maintained repository. A GitHub link becomes a live star badge. Leave blank rather than linking a reimplementation.
+      placeholder: https://github.com/owner/repo
+  - type: dropdown
+    id: category
+    attributes:
+      label: Section
+      description: Which table it belongs in. Cross-cutting membership is what tags are for.
+      options:
+        - Multimodal and reasoning (mllm)
+        - HDR (hdr)
+        - Video (vqa)
+        - No-reference image (nr-iqa)
+        - Full-reference image (fr-iqa)
+    validations: {required: true}
+  - type: input
+    id: tags
+    attributes:
+      label: Tags
+      description: "Space separated. Primary: HDR UGC VQA IQA. Modifiers: FR NR RR PU CLASSICAL DEEP CLIP TRANSFORMER MLLM RL REASONING BENCHMARK SYNTHETIC AUTHENTIC AIGC AESTHETIC STREAMING GAMING COMPRESSION"
+      placeholder: IQA NR CLASSICAL
+    validations: {required: true}
+  - type: input
+    id: note
+    attributes:
+      label: One-line description
+      description: What it does, not how good it is. Under about 110 characters.
+      placeholder: Spatial-domain NSS features from locally normalised luminance, no transform required
+    validations: {required: true}
+  - type: checkboxes
+    id: disclosure
+    attributes:
+      label: Before submitting
+      options:
+        - label: I checked this is not already in the catalog
+          required: true
+        - label: I am an author of this paper (tick only if true; it just speeds up review)

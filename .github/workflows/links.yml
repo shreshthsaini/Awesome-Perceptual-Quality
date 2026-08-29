@@ -1,0 +1,62 @@
+name: Link check
+
+on:
+  schedule:
+    # Mondays, 06:00 UTC. Link rot is the usual reason a list stops being useful.
+    - cron: "0 6 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  links:
+    name: weekly sweep
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Check every link in the catalog
+        id: check
+        run: |
+          set +e
+          python3 scripts/check_links.py --timeout 30 --workers 6 | tee report.txt
+          echo "status=${PIPESTATUS[0]}" >> "$GITHUB_OUTPUT"
+
+      - name: Open or update an issue when something is broken
+        if: steps.check.outputs.status != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          TITLE="Broken links found by the weekly check"
+          BODY_FILE=body.md
+          {
+            echo "The weekly link check found links that no longer resolve."
+            echo
+            echo "Entries are worth fixing rather than deleting: a moved project page"
+            echo "usually still exists somewhere. Lines marked UNVERIFIED are typically"
+            echo "a TLS or user-agent quirk on an academic host, so check with curl"
+            echo "before removing anything."
+            echo
+            echo '```'
+            cat report.txt
+            echo '```'
+            echo
+            echo "Run locally with: \`python3 scripts/check_links.py\`"
+          } > "$BODY_FILE"
+
+          EXISTING=$(gh issue list --state open --search "$TITLE in:title" --json number --jq '.[0].number')
+          if [ -n "$EXISTING" ]; then
+            gh issue comment "$EXISTING" --body-file "$BODY_FILE"
+            echo "commented on existing issue #$EXISTING"
+          else
+            gh issue create --title "$TITLE" --body-file "$BODY_FILE" --label "correction"
+          fi
+
+      - name: Fail the run so the badge goes red
+        if: steps.check.outputs.status != '0'
+        run: exit 1

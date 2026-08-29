@@ -1,0 +1,73 @@
+name: Auto-merge catalog changes
+
+# Queues data-only pull requests to merge once CI goes green, so the catalog
+# keeps moving without needing a maintainer online.
+#
+# pull_request_target runs with a write token, so this job deliberately never
+# checks out or executes the pull request's code. It only reads the changed
+# file list through the API and asks GitHub to merge when checks pass.
+
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, ready_for_review]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  queue:
+    if: github.event.pull_request.draft == false
+    runs-on: ubuntu-latest
+    steps:
+      - name: Decide whether this is safe to merge unattended
+        id: gate
+        env:
+          GH_TOKEN: ${{ github.token }}
+          REPO: ${{ github.repository }}
+          NUMBER: ${{ github.event.pull_request.number }}
+        run: |
+          if [ "${{ vars.AUTO_MERGE }}" = "false" ]; then
+            echo "auto-merge is switched off for this repository"
+            echo "ok=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+
+          FILES=$(gh api "repos/$REPO/pulls/$NUMBER/files" --paginate --jq '.[].filename')
+          echo "changed files:"; echo "$FILES" | sed 's/^/  /'
+
+          # Only the catalog and its generated output. A pull request that touches
+          # scripts/ or .github/ could change what CI even runs, so those always
+          # wait for a human.
+          BAD=$(echo "$FILES" | grep -vE '^(data/[a-z]+\.csv|README\.md|assets/landscape\.svg)$' || true)
+          if [ -n "$BAD" ]; then
+            echo "not auto-merging, touches files outside the catalog:"
+            echo "$BAD" | sed 's/^/  /'
+            echo "ok=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+
+          COUNT=$(echo "$FILES" | grep -c . || true)
+          if [ "$COUNT" -gt 3 ]; then
+            echo "not auto-merging, unexpectedly large change"
+            echo "ok=false" >> "$GITHUB_OUTPUT"; exit 0
+          fi
+
+          echo "ok=true" >> "$GITHUB_OUTPUT"
+
+      - name: Queue the merge
+        if: steps.gate.outputs.ok == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # --auto waits for the required checks configured on the branch.
+          gh pr merge "${{ github.event.pull_request.number }}" \
+            --repo "${{ github.repository }}" --squash --delete-branch --auto
+          echo "queued; it will merge once CI passes"
+
+      - name: Say why it is waiting
+        if: steps.gate.outputs.ok != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh pr comment "${{ github.event.pull_request.number }}" \
+            --repo "${{ github.repository }}" \
+            --body "This one needs a maintainer to look at it, because it changes files outside \`data/\`. Catalog-only pull requests merge on their own once CI passes." || true

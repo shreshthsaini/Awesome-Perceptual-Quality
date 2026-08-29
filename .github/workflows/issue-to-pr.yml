@@ -1,0 +1,140 @@
+name: Issue to pull request
+
+# Someone fills in an issue form, this turns it into a validated pull request.
+# No git, no clone, no CSV knowledge needed on their side.
+
+on:
+  issues:
+    types: [opened, labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  convert:
+    if: contains(github.event.issue.labels.*.name, 'add-paper') || contains(github.event.issue.labels.*.name, 'add-dataset')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Read the issue body
+        # Through an environment variable, never interpolated into the shell:
+        # the body is untrusted text written by a stranger.
+        env:
+          BODY: ${{ github.event.issue.body }}
+        run: printf '%s' "$BODY" > issue-body.md
+
+      - name: Work out which form was used
+        id: kind
+        run: |
+          if [ "${{ contains(github.event.issue.labels.*.name, 'add-paper') }}" = "true" ]; then
+            echo "kind=method" >> "$GITHUB_OUTPUT"
+          else
+            echo "kind=dataset" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build the catalog row
+        id: build
+        run: |
+          set +e
+          python3 scripts/issue_to_row.py --kind "${{ steps.kind.outputs.kind }}" --body-file issue-body.md > build.log 2>&1
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+          cat build.log
+
+      - name: Validate and regenerate
+        id: verify
+        if: steps.build.outputs.status == '0'
+        run: |
+          set +e
+          { python3 scripts/validate.py \
+            && python3 scripts/generate_readme.py \
+            && python3 scripts/generate_figure.py ; } > verify.log 2>&1
+          echo "status=$?" >> "$GITHUB_OUTPUT"
+          cat verify.log
+
+      - name: Check the links the row adds
+        id: links
+        if: steps.verify.outputs.status == '0'
+        run: |
+          set +e
+          NEW=$(git diff -- 'data/*.csv' | grep '^+' | grep -v '^+++' \
+                | grep -oE 'https://[^,"[:space:]]+' | sort -u)
+          if [ -n "$NEW" ]; then
+            python3 scripts/check_links.py --timeout 25 --workers 4 --urls $NEW > links.log 2>&1
+            echo "status=$?" >> "$GITHUB_OUTPUT"
+            cat links.log
+          else
+            echo "status=0" >> "$GITHUB_OUTPUT"
+            echo "no links to check" > links.log
+          fi
+
+      - name: Tell the reporter what went wrong
+        if: steps.build.outputs.status != '0' || steps.verify.outputs.status != '0' || steps.links.outputs.status != '0'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          {
+            echo "Thanks for the submission. It could not be turned into a pull request automatically:"
+            echo
+            echo '```'
+            cat build.log verify.log links.log 2>/dev/null
+            echo '```'
+            echo
+            echo "Edit the issue to fix it and the check runs again, or open a pull request by hand."
+            echo "Conventions are in [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md)."
+          } > comment.md
+          gh issue comment "${{ github.event.issue.number }}" --body-file comment.md
+          exit 1
+
+      - name: Open the pull request
+        id: pr
+        env:
+          GH_TOKEN: ${{ github.token }}
+          ISSUE: ${{ github.event.issue.number }}
+          TITLE: ${{ github.event.issue.title }}
+        run: |
+          BRANCH="issue-${ISSUE}-catalog"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add data README.md assets/landscape.svg
+          git commit -m "$(printf 'Catalog entry from #%s\n\n%s\n\nOpened automatically from the issue form. Validated, regenerated and link-checked before this commit.' "$ISSUE" "$TITLE")"
+          git push -u origin "$BRANCH"
+
+          {
+            echo "Closes #${ISSUE}"
+            echo
+            echo "Built from the issue form. All automated checks passed before this was opened:"
+            echo
+            echo "- \`validate.py\`: columns, tag vocabulary, year, duplicates"
+            echo "- \`generate_readme.py\` and \`generate_figure.py\`: regenerated and committed"
+            echo "- \`check_links.py\`: every link this row adds resolves"
+            echo
+            echo "\`\`\`"
+            cat build.log
+            echo "\`\`\`"
+          } > pr.md
+
+          URL=$(gh pr create --title "$TITLE" --body-file pr.md --base main --head "$BRANCH")
+          echo "url=$URL" >> "$GITHUB_OUTPUT"
+          echo "number=$(basename "$URL")" >> "$GITHUB_OUTPUT"
+
+      - name: Merge it, unless auto-merge is switched off
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          # Flip the repository variable AUTO_MERGE to "false" to require a human
+          # look at every submission instead.
+          if [ "${{ vars.AUTO_MERGE }}" = "false" ]; then
+            gh issue comment "${{ github.event.issue.number }}" \
+              --body "Opened ${{ steps.pr.outputs.url }} for review. All checks passed."
+            exit 0
+          fi
+          gh pr merge "${{ steps.pr.outputs.number }}" --squash --delete-branch
+          gh issue comment "${{ github.event.issue.number }}" \
+            --body "Added to the catalog in ${{ steps.pr.outputs.url }}. Thanks."

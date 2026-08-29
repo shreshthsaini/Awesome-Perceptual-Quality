@@ -1,0 +1,83 @@
+name: Add a dataset
+description: Suggest a subjective study or benchmark. No git needed; filling this in opens a pull request for you.
+title: "Add dataset: "
+labels: ["add-dataset"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Fill this in and a bot opens the pull request for you.
+        Leave size or annotation counts blank if you cannot confirm them. Guessed numbers get copied onward, which is worse than an empty cell.
+  - type: input
+    id: name
+    attributes:
+      label: Short name
+      placeholder: KoNViD-1k
+    validations: {required: true}
+  - type: input
+    id: year
+    attributes:
+      label: Year
+      placeholder: "2017"
+    validations: {required: true}
+  - type: input
+    id: venue
+    attributes:
+      label: Venue
+      placeholder: QoMEX
+    validations: {required: true}
+  - type: input
+    id: paper_url
+    attributes:
+      label: Paper link
+      placeholder: https://arxiv.org/abs/1803.01761
+    validations: {required: true}
+  - type: input
+    id: data_url
+    attributes:
+      label: Data link
+      description: Download or project page. A GitHub link becomes a live star badge.
+      placeholder: https://database.mmsp-kn.de/konvid-1k-database.html
+  - type: input
+    id: content
+    attributes:
+      label: Size
+      description: What the dataset holds. Leave blank if not reliably documented.
+      placeholder: 1,200 videos at 960x540
+  - type: input
+    id: annotations
+    attributes:
+      label: Annotations
+      description: Rating count or protocol.
+      placeholder: crowdsourced MOS on a 1 to 5 scale
+  - type: dropdown
+    id: category
+    attributes:
+      label: Section
+      options:
+        - Generated content (aigc)
+        - HDR (hdr)
+        - Video (video)
+        - Image (image)
+    validations: {required: true}
+  - type: input
+    id: tags
+    attributes:
+      label: Tags
+      description: "Space separated. Primary: HDR UGC VQA IQA. Modifiers include SYNTHETIC AUTHENTIC AIGC AESTHETIC STREAMING GAMING COMPRESSION BENCHMARK"
+      placeholder: VQA UGC AUTHENTIC
+    validations: {required: true}
+  - type: input
+    id: note
+    attributes:
+      label: One-line description
+      placeholder: Sampled from YFCC100M using six quality-diversity attributes
+    validations: {required: true}
+  - type: checkboxes
+    id: disclosure
+    attributes:
+      label: Before submitting
+      options:
+        - label: I checked this is not already in the catalog
+          required: true
+        - label: I am an author of this dataset (tick only if true)

@@ -1,0 +1,32 @@
+name: Fix or remove an entry
+description: Wrong year, dead link, misattributed venue, inflated size, or something that should not be here.
+title: "Fix: "
+labels: ["correction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Corrections matter as much as additions. If an entry misrepresents your own work, say so and it gets priority.
+  - type: input
+    id: entry
+    attributes:
+      label: Which entry
+      placeholder: KoNViD-1k, in Datasets > Video
+    validations: {required: true}
+  - type: textarea
+    id: problem
+    attributes:
+      label: What is wrong
+      placeholder: The annotation count is listed as 1.2M but the paper reports 205,000.
+    validations: {required: true}
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: A link backing the correction, if you have one.
+  - type: checkboxes
+    id: author
+    attributes:
+      label: Optional
+      options:
+        - label: This is my own work

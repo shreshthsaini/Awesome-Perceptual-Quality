@@ -10,6 +10,8 @@
 ![UGC](https://img.shields.io/badge/UGC%20tagged-41-1a7f37?style=flat-square)
 ![HDR](https://img.shields.io/badge/HDR%20tagged-25-bf3989?style=flat-square)
 [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen?style=flat-square)](CONTRIBUTING.md)
+[![CI](https://github.com/shreshthsaini/Awesome-Perceptual-Quality/actions/workflows/ci.yml/badge.svg)](https://github.com/shreshthsaini/Awesome-Perceptual-Quality/actions/workflows/ci.yml)
+[![Links](https://github.com/shreshthsaini/Awesome-Perceptual-Quality/actions/workflows/links.yml/badge.svg)](https://github.com/shreshthsaini/Awesome-Perceptual-Quality/actions/workflows/links.yml)
 
 <img src="assets/landscape.svg" alt="Timeline of perceptual quality research across image quality, video quality, UGC, and HDR, showing that UGC and HDR subjective data arrived late and remains sparse" width="100%">
 
@@ -45,14 +47,18 @@ Modifiers narrow it further: `FR` and `NR` for reference availability, `MLLM` fo
 
 ## Adding a paper
 
-`README.md` is generated. Edit the CSVs in `data/`, then run:
+**Easiest way, no git at all:** [open an issue](https://github.com/shreshthsaini/Awesome-Perceptual-Quality/issues/new/choose), fill in the form, done. A bot builds the row, validates it, checks your links, regenerates the tables and opens the pull request for you. If something is off it says so in a comment rather than failing silently.
+
+**Editing directly:** `README.md` is generated, so change the CSVs in `data/` instead, then run:
 
 ```bash
 python3 scripts/validate.py
 python3 scripts/generate_readme.py
 ```
 
-Commit the CSV row and the regenerated README together. Standard library only, nothing to install. Conventions are in [CONTRIBUTING.md](CONTRIBUTING.md). Your own papers are welcome; just say you are an author so review is quick.
+Commit the CSV row and the regenerated README together. Standard library only, nothing to install.
+
+Either way it is welcome, including your own papers. Saying you are an author just makes review faster. Conventions live in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Contents
 
