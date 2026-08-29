@@ -1,0 +1,9 @@
+name,years,url,note
+NTIRE Perceptual IQA Challenge,2021-2022,https://arxiv.org/abs/2206.11695,CVPR NTIRE challenge on full-reference and no-reference IQA for GAN-restored images
+NTIRE Quality Assessment of AI-Generated Content,2024-2025,https://arxiv.org/abs/2404.16687,CVPR NTIRE challenge benchmarking IQA and VQA on AI-generated images and video
+NTIRE Short-form UGC Video Quality Assessment,2024-2025,https://arxiv.org/abs/2404.11313,CVPR NTIRE challenge on efficient VQA for short-form user-generated video
+AIM Compressed Video Quality Assessment,2024,https://arxiv.org/abs/2408.11982,ECCV AIM challenge evaluating VQA models across 14 codecs and standards
+AIS Video Quality Assessment of UGC,2024,https://arxiv.org/abs/2404.16205,CVPR AI for Streaming challenge on blind VQA for user-generated video
+CLIC: Challenge on Learned Image Compression,2018-2025,https://clic2025.compression.cc/,Annual workshop challenge benchmarking learned image and video compression quality
+ICME Generalizable HDR and SDR Video Quality Measurement,2025,https://arxiv.org/abs/2506.22790,ICME grand challenge benchmarking VQA models across both HDR and SDR content
+VQEG,1997-ongoing,https://vqeg.org/projects-home,Cross-industry body running ongoing subjective and objective video quality projects

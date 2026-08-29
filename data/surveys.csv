@@ -1,0 +1,8 @@
+title,year,venue,paper_url,note
+Quality Assessment in the Era of Large Models: A Survey,2024,arXiv,https://arxiv.org/abs/2409.00031,"Quality assessment performed by, and applied to, large multimodal models"
+Video Quality Assessment: A Comprehensive Survey,2024,arXiv,https://arxiv.org/abs/2412.04508,"Broad survey of VQA algorithms, benchmarks and databases including LMM-based methods"
+Perceptual Video Quality Assessment: A Survey,2024,SCIS,https://arxiv.org/abs/2402.03413,Review of subjective VQA methodology alongside objective VQA models
+A Survey of AI-Generated Video Evaluation,2024,arXiv,https://arxiv.org/abs/2410.19884,"Metric-based, human-involved and model-centered evaluation of generated video"
+"A Survey on Image Quality Assessment: Insights, Analysis, and Future Outlook",2025,arXiv,https://arxiv.org/abs/2502.08540,"Statistical, ML and deep IQA methods with future directions"
+Blind Image Quality Assessment: A Brief Survey,2023,arXiv,https://arxiv.org/abs/2312.16551,"Compact survey of hand-crafted, deep and multimodal no-reference IQA"
+Perceptual Image Quality Assessment: A Survey,2020,SCIS,https://doi.org/10.1007/s11432-019-2757-1,Foundational review of IQA databases and classical to early-deep methods

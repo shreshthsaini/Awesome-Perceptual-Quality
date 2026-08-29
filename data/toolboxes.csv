@@ -1,0 +1,13 @@
+name,repo_url,stars,language,note
+IQA-PyTorch (pyiqa),https://github.com/chaofengc/IQA-PyTorch,3381,Python,"PyTorch toolbox for IQA: PSNR, SSIM, LPIPS, NIQE, MUSIQ, TOPIQ, NIMA, BRISQUE and more"
+PIQ,https://github.com/photosynthesis-team/piq,1574,Python,Collection of measures and metrics for image-to-image tasks in PyTorch
+Netflix VMAF (libvmaf),https://github.com/Netflix/vmaf,5461,C,"Perceptual video quality metric based on multi-method fusion, includes libvmaf"
+TorchMetrics,https://github.com/Lightning-AI/torchmetrics,2464,Python,"PyTorch metrics library with an image module covering SSIM, LPIPS, FID, PSNR"
+DISTS,https://github.com/dingkeyan93/DISTS,489,Python,Reference implementation of the Deep Image Structure and Texture Similarity metric
+LPIPS,https://github.com/richzhang/PerceptualSimilarity,4272,Python,"Reference implementation of Learned Perceptual Image Patch Similarity, pip install lpips"
+SPORCO,https://github.com/bwohlberg/sporco,273,Python,Sparse optimization research code used in restoration and quality-related pipelines
+ColorVideoVDP,https://github.com/gfxdisp/ColorVideoVDP,119,Python,"Perceptual difference metric for color, luminance and HDR images/video"
+HDRutils,https://github.com/gfxdisp/HDRutils,37,Python,"Utilities for HDR image merging, I/O and processing used in HDR quality pipelines"
+MSU VQMT SDK,https://github.com/msu-video-group/vqmt-sdk,7,C++,SDK for MSU Video Quality Measurement Tool; build custom video/image quality plugins
+FFmpeg,https://github.com/FFmpeg/FFmpeg,63751,C,"Includes libvmaf, SSIM and PSNR quality filters for video encoding pipelines"
+sewar,https://github.com/andrewekhalel/sewar,611,Python,"Python package bundling PSNR, SSIM, MS-SSIM, VIFp, UQI and other full-reference IQA metrics"
