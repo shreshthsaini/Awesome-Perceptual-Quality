@@ -61,9 +61,16 @@ def stars_cell(url):
     return f"[link]({url})"
 
 
+DASH = "-"
+
+
 def link(text, url):
     url = (url or "").strip()
     return f"[{text}]({url})" if url else ""
+
+
+def or_dash(cell):
+    return cell if (cell or "").strip() else DASH
 
 
 def sort_key(row):
@@ -89,7 +96,7 @@ def methods_table(rows):
             paper = f"{paper}<br /><sub>{note}</sub>" if paper else f"<sub>{note}</sub>"
         body.append(
             f"| **{r.get('name','')}** | {paper} | {venue} | "
-            f"{tag_cell(r.get('tags'))} | {stars_cell(r.get('code_url'))} |"
+            f"{tag_cell(r.get('tags'))} | {or_dash(stars_cell(r.get('code_url')))} |"
         )
     return head + "\n".join(body) if body else head + "| | *no entries yet* | | | |"
 
@@ -110,8 +117,8 @@ def datasets_table(rows):
         if note:
             name = f"{name}<br /><sub>{note}</sub>"
         body.append(
-            f"| {name} | {r.get('content','')} | {r.get('annotations','')} | {venue} | "
-            f"{tag_cell(r.get('tags'))} | {links} |"
+            f"| {name} | {or_dash(r.get('content'))} | {or_dash(r.get('annotations'))} | {venue} | "
+            f"{tag_cell(r.get('tags'))} | {or_dash(links)} |"
         )
     return head + "\n".join(body) if body else head + "| | *no entries yet* | | | | |"
 
@@ -177,6 +184,13 @@ def build_blocks():
 
     n_hdr = sum(1 for r in methods + datasets if "HDR" in (r.get("tags") or ""))
     n_ugc = sum(1 for r in methods + datasets if "UGC" in (r.get("tags") or ""))
+    for cat in METHOD_CATEGORIES:
+        blocks[f"count:methods:{cat}"] = str(sum(1 for r in methods if r.get("category") == cat))
+    for cat in DATASET_CATEGORIES:
+        blocks[f"count:datasets:{cat}"] = str(sum(1 for r in datasets if r.get("category") == cat))
+    blocks["count:toolboxes"] = str(len(read("toolboxes")))
+    blocks["count:challenges"] = str(len(read("challenges")))
+    blocks["count:surveys"] = str(len(read("surveys")))
     blocks["stat:methods"] = str(len(methods))
     blocks["stat:datasets"] = str(len(datasets))
     blocks["stat:hdr"] = str(n_hdr)
@@ -205,7 +219,7 @@ def main():
         flags=re.S,
     )
     # Inline stats: {{stat:methods}}
-    text = re.sub(r"\{\{(stat:[a-z]+)\}\}", lambda m: blocks[m.group(1)], text)
+    text = re.sub(r"\{\{((?:stat|count):[a-z:\-]+)\}\}", lambda m: blocks[m.group(1)], text)
 
     README.write_text(text, encoding="utf-8")
     print(

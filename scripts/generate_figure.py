@@ -124,25 +124,27 @@ def main():
                 offset = (k - (n - 1) / 2) * gap
                 cy = base + offset
                 if src == "datasets":
-                    s = DOT_R * 0.92
-                    parts.append(
-                        f'<rect x="{cx - s:.1f}" y="{cy - s:.1f}" width="{s * 2:.1f}" height="{s * 2:.1f}" '
-                        f'rx="1.2" fill="{color}" opacity="0.9"/>'
-                    )
+                    # Diamond. A rounded square read almost identically to the
+                    # circles at this size; a rotated silhouette does not.
+                    d = DOT_R * 1.25
+                    pts = f"{cx:.1f},{cy - d:.1f} {cx + d:.1f},{cy:.1f} {cx:.1f},{cy + d:.1f} {cx - d:.1f},{cy:.1f}"
+                    parts.append(f'<polygon points="{pts}" fill="{color}" opacity="0.95"/>')
                 else:
                     parts.append(
                         f'<circle cx="{cx:.1f}" cy="{cy:.1f}" r="{DOT_R:.1f}" '
-                        f'fill="{color}" opacity="0.62"/>'
+                        f'fill="{color}" opacity="0.55"/>'
                     )
 
     # legend
     ly = TOP + len(LANES) * LANE_H + 34
-    parts.append(f'<circle cx="{LEFT + 6}" cy="{ly - 4}" r="{DOT_R}" fill="{MUTED}" opacity="0.62"/>')
+    parts.append(f'<circle cx="{LEFT + 6}" cy="{ly - 4}" r="{DOT_R}" fill="{MUTED}" opacity="0.55"/>')
     parts.append(f'<text x="{LEFT + 20}" y="{ly}" font-size="12" fill="{MUTED}">method</text>')
+    lx, lcy, d = LEFT + 90, ly - 4, DOT_R * 1.25
     parts.append(
-        f'<rect x="{LEFT + 84}" y="{ly - 8.6}" width="9.2" height="9.2" rx="1.2" fill="{MUTED}" opacity="0.9"/>'
+        f'<polygon points="{lx},{lcy - d:.1f} {lx + d:.1f},{lcy} {lx},{lcy + d:.1f} {lx - d:.1f},{lcy}" '
+        f'fill="{MUTED}" opacity="0.95"/>'
     )
-    parts.append(f'<text x="{LEFT + 100}" y="{ly}" font-size="12" fill="{MUTED}">dataset</text>')
+    parts.append(f'<text x="{LEFT + 104}" y="{ly}" font-size="12" fill="{MUTED}">dataset</text>')
     parts.append(
         f'<text x="{W - RIGHT}" y="{ly}" font-size="11" fill="{MUTED}" text-anchor="end" opacity="0.7">'
         f'entries carry multiple tags, so lanes overlap</text>'

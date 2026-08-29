@@ -17,6 +17,21 @@
 
 Image quality, video quality, user-generated content, and HDR, kept in one place instead of four. Datasets sit in their own tables so you can find data by what it holds rather than by which paper introduced it. Every entry is tagged along all four axes, so an HDR video model shows up whether you came looking for HDR or for video.
 
+## Contact
+
+Maintained by [Shreshth Saini](https://shreshthsaini.github.io). Corrections and additions are welcome through [issues](https://github.com/shreshthsaini/Awesome-Perceptual-Quality/issues) or a pull request.
+
+If the catalog is useful in your work, a star helps others find it, and you can cite it as:
+
+```bibtex
+@misc{saini2026awesomeperceptualquality,
+  title  = {Awesome Perceptual Quality: A Tagged Catalog of Image, Video, UGC and HDR Quality Assessment},
+  author = {Saini, Shreshth},
+  year   = {2026},
+  url    = {https://github.com/shreshthsaini/Awesome-Perceptual-Quality}
+}
+```
+
 ## Tags
 
 | Tag | Meaning |
@@ -41,21 +56,21 @@ Commit the CSV row and the regenerated README together. Standard library only, n
 
 ## Contents
 
-- [Datasets](#datasets)
-  - [Generated content](#generated-content)
-  - [HDR](#hdr)
-  - [Video](#video)
-  - [Image](#image)
-- [Methods](#methods)
-  - [Multimodal and reasoning](#multimodal-and-reasoning)
-  - [HDR](#hdr-1)
-  - [Video](#video-1)
-  - [No-reference image](#no-reference-image)
-  - [Full-reference image](#full-reference-image)
-- [Challenges](#challenges)
-- [Surveys](#surveys)
-- [Toolboxes](#toolboxes)
-- [Elsewhere](#elsewhere)
+- **[Datasets](#datasets)** ({{stat:datasets}})
+  - [Generated content](#generated-content) ({{count:datasets:aigc}}) &nbsp;·&nbsp; diffusion and text-to-vision output
+  - [HDR](#hdr) ({{count:datasets:hdr}}) &nbsp;·&nbsp; high dynamic range, wide gamut, UGC HDR
+  - [Video](#video) ({{count:datasets:video}}) &nbsp;·&nbsp; UGC, streaming, gaming, compression
+  - [Image](#image) ({{count:datasets:image}}) &nbsp;·&nbsp; synthetic distortion, in-the-wild, aesthetics
+- **[Methods](#methods)** ({{stat:methods}})
+  - [Multimodal and reasoning](#multimodal-and-reasoning) ({{count:methods:mllm}}) &nbsp;·&nbsp; MLLM scorers, RL-trained reasoning, benchmarks
+  - [HDR](#hdr-1) ({{count:methods:hdr}}) &nbsp;·&nbsp; PU encodings, VDP family, HDR UGC models
+  - [Video](#video-1) ({{count:methods:vqa}}) &nbsp;·&nbsp; full-reference, blind UGC, efficient samplers
+  - [No-reference image](#no-reference-image) ({{count:methods:nr-iqa}}) &nbsp;·&nbsp; NSS, CNN, transformer, CLIP
+  - [Full-reference image](#full-reference-image) ({{count:methods:fr-iqa}}) &nbsp;·&nbsp; classical indices, learned perceptual distances
+- **[Challenges](#challenges)** ({{count:challenges}}) &nbsp;·&nbsp; NTIRE, AIM, AIS, CLIC, ICME, VQEG
+- **[Surveys](#surveys)** ({{count:surveys}})
+- **[Toolboxes](#toolboxes)** ({{count:toolboxes}}) &nbsp;·&nbsp; pyiqa, VMAF, PIQ, ColorVideoVDP
+- **[Elsewhere](#elsewhere)** &nbsp;·&nbsp; related lists
 
 ---
 
