@@ -186,3 +186,6 @@ jobs:
           gh pr merge "${{ steps.pr.outputs.number }}" --squash --delete-branch
           gh issue comment "${{ github.event.issue.number }}" \
             --body "Added to the catalog in ${{ steps.pr.outputs.url }}. Thanks."
+          # The Closes keyword did not reliably fire for these bot-authored
+          # merges, so close it explicitly rather than leaving stale issues open.
+          gh issue close "${{ github.event.issue.number }}" || true
