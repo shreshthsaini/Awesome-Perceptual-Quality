@@ -5,7 +5,7 @@
 **Metrics, models, and subjective datasets for how images and video actually look to people.**
 
 [![Awesome](https://awesome.re/badge-flat2.svg)](https://awesome.re)
-![Methods](https://img.shields.io/badge/methods-113-1f6feb?style=flat-square)
+![Methods](https://img.shields.io/badge/methods-114-1f6feb?style=flat-square)
 ![Datasets](https://img.shields.io/badge/datasets-63-8250df?style=flat-square)
 ![UGC](https://img.shields.io/badge/UGC%20tagged-41-1a7f37?style=flat-square)
 ![HDR](https://img.shields.io/badge/HDR%20tagged-25-bf3989?style=flat-square)
@@ -67,8 +67,8 @@ Either way it is welcome, including your own papers. Saying you are an author ju
   - [HDR](#hdr) (10) &nbsp;·&nbsp; high dynamic range, wide gamut, UGC HDR
   - [Video](#video) (24) &nbsp;·&nbsp; UGC, streaming, gaming, compression
   - [Image](#image) (20) &nbsp;·&nbsp; synthetic distortion, in-the-wild, aesthetics
-- **[Methods](#methods)** (113)
-  - [Multimodal and reasoning](#multimodal-and-reasoning) (23) &nbsp;·&nbsp; MLLM scorers, RL-trained reasoning, benchmarks
+- **[Methods](#methods)** (114)
+  - [Multimodal and reasoning](#multimodal-and-reasoning) (24) &nbsp;·&nbsp; MLLM scorers, RL-trained reasoning, benchmarks
   - [HDR](#hdr-1) (15) &nbsp;·&nbsp; PU encodings, VDP family, HDR UGC models
   - [Video](#video-1) (26) &nbsp;·&nbsp; full-reference, blind UGC, efficient samplers
   - [No-reference image](#no-reference-image) (29) &nbsp;·&nbsp; NSS, CNN, transformer, CLIP
@@ -188,6 +188,7 @@ Language models scoring quality, usually with an explanation attached, and the b
 <!-- AUTOGEN:methods:mllm -->
 | Method | Paper | Venue | Tags | Code |
 | :--- | :--- | :---: | :--- | :---: |
+| **Grounding-IQA** | [Grounding-IQA: Grounding Multimodal Language Model for Image Quality Assessment](https://arxiv.org/abs/2411.17237)<br /><sub>Ties quality description to spatial location, so the model says where the degradation is</sub> | ICLR 2026 | ![IQA](https://img.shields.io/badge/IQA-1f6feb?style=flat-square&labelColor=1f6feb) `MLLM` `REASONING` | [![Stars](https://img.shields.io/github/stars/zhengchen1999/Grounding-IQA?style=flat-square&label=%E2%98%85&color=57606a)](https://github.com/zhengchen1999/Grounding-IQA) |
 | **PreResQ-R1** | [PreResQ-R1: Towards Fine-Grained Rank-and-Score Reinforcement Learning for Visual Quality Assessment](https://arxiv.org/abs/2511.05393)<br /><sub>Disentangled preference-response GRPO unifying score regression and ranking</sub> | EMNLP 2026 | ![VQA](https://img.shields.io/badge/VQA-8250df?style=flat-square&labelColor=8250df) ![IQA](https://img.shields.io/badge/IQA-1f6feb?style=flat-square&labelColor=1f6feb) `MLLM` `RL` `REASONING` | - |
 | **RALI** | [Reasoning as Representation: Rethinking Visual Reinforcement Learning in Image Quality Assessment](https://arxiv.org/abs/2510.11369)<br /><sub>Shows RL-trained IQA models convert visual features into aligned text representations</sub> | ICLR 2026 | ![IQA](https://img.shields.io/badge/IQA-1f6feb?style=flat-square&labelColor=1f6feb) `MLLM` `RL` `REASONING` | [![Stars](https://img.shields.io/github/stars/xuanyuzhang21/RALI?style=flat-square&label=%E2%98%85&color=57606a)](https://github.com/xuanyuzhang21/RALI) |
 | **Refine-IQA** | [Refine-IQA: Multi-Stage Reinforcement Finetuning for Perceptual Image Quality Assessment](https://arxiv.org/abs/2508.03763)<br /><sub>Multi-stage RFT with a reward-supervised think process and the Refine-Perception-20K set</sub> | AAAI 2026 | ![IQA](https://img.shields.io/badge/IQA-1f6feb?style=flat-square&labelColor=1f6feb) `MLLM` `RL` `REASONING` | - |
