@@ -14,18 +14,15 @@ DATA = ROOT / "data"
 TEMPLATE = ROOT / "README.template.md"
 README = ROOT / "README.md"
 
-METHOD_CATEGORIES = ["hdr", "vqa", "nr-iqa", "fr-iqa", "mllm"]
-DATASET_CATEGORIES = ["hdr", "video", "image"]
+METHOD_CATEGORIES = ["mllm", "hdr", "vqa", "nr-iqa", "fr-iqa"]
+DATASET_CATEGORIES = ["aigc", "hdr", "video", "image"]
 
-# Primary tags render as emoji rather than shields images. With ~180 rows the
-# badge version meant hundreds of image requests per page load; emoji cost none
-# and still colour-code at a glance. Image badges are reserved for star counts,
-# which genuinely have to be fetched.
-TAG_EMOJI = {
-    "HDR": "\U0001F534",   # red circle
-    "UGC": "\U0001F7E2",   # green circle
-    "VQA": "\U0001F7E3",   # purple circle
-    "IQA": "\U0001F535",   # blue circle
+# Primary tags render as coloured shields badges; modifiers as code spans.
+TAG_COLORS = {
+    "HDR": "bf3989",
+    "UGC": "1a7f37",
+    "VQA": "8250df",
+    "IQA": "1f6feb",
 }
 TAG_ORDER = ["HDR", "UGC", "VQA", "IQA"]
 
@@ -39,10 +36,13 @@ def read(name):
 
 
 def tag_cell(tags):
-    """Primary tags first as coloured emoji, then modifiers as code spans."""
+    """Primary tags first as coloured badges, then modifiers as code spans."""
     have = (tags or "").split()
-    primary = [f"{TAG_EMOJI[t]} {t}" for t in TAG_ORDER if t in have]
-    rest = [f"`{t}`" for t in have if t not in TAG_EMOJI]
+    primary = [
+        f"![{t}](https://img.shields.io/badge/{t}-{TAG_COLORS[t]}?style=flat-square&labelColor={TAG_COLORS[t]})"
+        for t in TAG_ORDER if t in have
+    ]
+    rest = [f"`{t}`" for t in have if t not in TAG_COLORS]
     return " ".join(primary + rest)
 
 

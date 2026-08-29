@@ -27,7 +27,7 @@ VALID_TAGS = {
     "STREAMING", "GAMING", "COMPRESSION",
 }
 METHOD_CATEGORIES = {"fr-iqa", "nr-iqa", "vqa", "hdr", "mllm"}
-DATASET_CATEGORIES = {"image", "video", "hdr"}
+DATASET_CATEGORIES = {"aigc", "hdr", "video", "image"}
 
 errors = []
 warnings = []

@@ -15,63 +15,72 @@
 
 </div>
 
-## What this is
+Image quality, video quality, user-generated content, and HDR, kept in one place instead of four. Datasets sit in their own tables so you can find data by what it holds rather than by which paper introduced it. Every entry is tagged along all four axes, so an HDR video model shows up whether you came looking for HDR or for video.
 
-A single catalog of perceptual quality assessment work: the metrics that predict human judgements of visual quality, the models that learn them, and the subjective studies that make either possible.
-
-Four tags run through everything, and most entries carry more than one:
+## Tags
 
 | Tag | Meaning |
 | :--- | :--- |
-| 🔴 `HDR` | High dynamic range, wide gamut, high bit depth |
-| 🟢 `UGC` | User-generated content, authentic rather than simulated distortion |
-| 🟣 `VQA` | Video quality |
-| 🔵 `IQA` | Still image quality |
+| ![HDR](https://img.shields.io/badge/HDR-bf3989?style=flat-square&labelColor=bf3989) | High dynamic range, wide gamut, high bit depth |
+| ![UGC](https://img.shields.io/badge/UGC-1a7f37?style=flat-square&labelColor=1a7f37) | User-generated content, authentic rather than simulated distortion |
+| ![VQA](https://img.shields.io/badge/VQA-8250df?style=flat-square&labelColor=8250df) | Video quality |
+| ![IQA](https://img.shields.io/badge/IQA-1f6feb?style=flat-square&labelColor=1f6feb) | Still image quality |
 
-Modifier tags narrow things further: `FR` and `NR` for reference availability, `MLLM` for language-model-based scorers, `AIGC` for generated-content quality, `SYNTHETIC` and `AUTHENTIC` for how distortions arose, plus `GAMING`, `STREAMING`, and `COMPRESSION`.
+Modifiers narrow it further: `FR` and `NR` for reference availability, `MLLM` for language-model scorers, `AIGC` for generated content, `SYNTHETIC` and `AUTHENTIC` for how the distortion arose, plus `GAMING`, `STREAMING`, and `COMPRESSION`.
 
-## Why it exists
+## Adding a paper
 
-Quality assessment has no home list. Image quality is covered reasonably well by [Awesome-Image-Quality-Assessment](https://github.com/chaofengc/Awesome-Image-Quality-Assessment), but video quality has nothing dedicated at all, so video papers get absorbed into image lists or scattered across generation lists that were built for a different purpose. HDR quality is worse off again: it sits between [Awesome-High-Dynamic-Range-Imaging](https://github.com/rebeccaeexu/Awesome-High-Dynamic-Range-Imaging), which is organised around reconstruction, and general IQA lists that predate HDR content entirely.
+`README.md` is generated. Edit the CSVs in `data/`, then run:
 
-The practical result is that finding the right dataset takes longer than it should. A researcher looking for authentic-distortion HDR video with subjective scores currently has to know which three unrelated lists to check.
+```bash
+python3 scripts/validate.py
+python3 scripts/generate_readme.py
+```
 
-This catalog puts image, video, UGC, and HDR in one place, tags each entry along all four axes, and keeps datasets in their own tables so you can find data by what it contains rather than by which paper introduced it.
+Commit the CSV row and the regenerated README together. Standard library only, nothing to install. Conventions are in [CONTRIBUTING.md](CONTRIBUTING.md). Your own papers are welcome; just say you are an author so review is quick.
 
 ## Contents
 
 - [Datasets](#datasets)
-  - [HDR quality datasets](#hdr-quality-datasets)
-  - [Video quality datasets](#video-quality-datasets)
-  - [Image quality datasets](#image-quality-datasets)
+  - [Generated content](#generated-content)
+  - [HDR](#hdr)
+  - [Video](#video)
+  - [Image](#image)
 - [Methods](#methods)
-  - [HDR quality](#hdr-quality)
-  - [Video quality](#video-quality)
-  - [No-reference image quality](#no-reference-image-quality)
-  - [Full-reference image quality](#full-reference-image-quality)
-  - [MLLM and reasoning-based quality](#mllm-and-reasoning-based-quality)
-- [Toolboxes](#toolboxes)
+  - [Multimodal and reasoning](#multimodal-and-reasoning)
+  - [HDR](#hdr-1)
+  - [Video](#video-1)
+  - [No-reference image](#no-reference-image)
+  - [Full-reference image](#full-reference-image)
 - [Challenges](#challenges)
 - [Surveys](#surveys)
-- [Contributing](#contributing)
+- [Toolboxes](#toolboxes)
+- [Elsewhere](#elsewhere)
 
 ---
 
 ## Datasets
 
-Subjective studies and benchmarks. Blank cells mean the number is not reliably documented, not that it is zero.
+Newest first. A blank cell means the number is not reliably documented, not that it is zero.
 
-### HDR quality datasets
+### Generated content
+
+Subjective data for diffusion and text-to-vision output, where the failure modes differ from camera distortion.
+
+<!-- AUTOGEN:datasets:aigc -->
+<!-- /AUTOGEN -->
+
+### HDR
 
 <!-- AUTOGEN:datasets:hdr -->
 <!-- /AUTOGEN -->
 
-### Video quality datasets
+### Video
 
 <!-- AUTOGEN:datasets:video -->
 <!-- /AUTOGEN -->
 
-### Image quality datasets
+### Image
 
 <!-- AUTOGEN:datasets:image -->
 <!-- /AUTOGEN -->
@@ -80,49 +89,40 @@ Subjective studies and benchmarks. Blank cells mean the number is not reliably d
 
 ## Methods
 
-### HDR quality
+### Multimodal and reasoning
 
-High dynamic range content, where luminance range and bit depth change what the distortions even look like.
-
-<!-- AUTOGEN:methods:hdr -->
-<!-- /AUTOGEN -->
-
-### Video quality
-
-Temporal quality, including the UGC setting where authentic distortions stack on top of each other.
-
-<!-- AUTOGEN:methods:vqa -->
-<!-- /AUTOGEN -->
-
-### No-reference image quality
-
-Blind metrics that score an image on its own. What most real deployments need, since the reference is rarely available.
-
-<!-- AUTOGEN:methods:nr-iqa -->
-<!-- /AUTOGEN -->
-
-### Full-reference image quality
-
-Metrics with access to a pristine reference.
-
-<!-- AUTOGEN:methods:fr-iqa -->
-<!-- /AUTOGEN -->
-
-### MLLM and reasoning-based quality
-
-Multimodal language models used as quality evaluators, producing a score with an explanation attached.
+Language models scoring quality, usually with an explanation attached, and the benchmarks built to test them.
 
 <!-- AUTOGEN:methods:mllm -->
 <!-- /AUTOGEN -->
 
----
+### HDR
 
-## Toolboxes
+Luminance range and bit depth change what the distortions look like, so SDR metrics transfer badly.
 
-Working implementations. Prefer these over reimplementing a metric from its paper, since small preprocessing differences move scores more than most people expect.
-
-<!-- AUTOGEN:toolboxes -->
+<!-- AUTOGEN:methods:hdr -->
 <!-- /AUTOGEN -->
+
+### Video
+
+Temporal quality, including the UGC case where authentic distortions stack on top of each other.
+
+<!-- AUTOGEN:methods:vqa -->
+<!-- /AUTOGEN -->
+
+### No-reference image
+
+Blind scoring, which is what most deployments need since the reference is rarely there.
+
+<!-- AUTOGEN:methods:nr-iqa -->
+<!-- /AUTOGEN -->
+
+### Full-reference image
+
+<!-- AUTOGEN:methods:fr-iqa -->
+<!-- /AUTOGEN -->
+
+---
 
 ## Challenges
 
@@ -134,24 +134,14 @@ Working implementations. Prefer these over reimplementing a metric from its pape
 <!-- AUTOGEN:surveys -->
 <!-- /AUTOGEN -->
 
----
+## Toolboxes
 
-## Contributing
+Working implementations. Worth preferring over a fresh reimplementation, since small preprocessing differences move scores more than people expect.
 
-Pull requests are welcome, including for your own papers. See [CONTRIBUTING.md](CONTRIBUTING.md).
+<!-- AUTOGEN:toolboxes -->
+<!-- /AUTOGEN -->
 
-One thing to know before you start: **`README.md` is generated, so do not edit it.** Every table is rendered from the CSV files in `data/`. Add a row there, run the two scripts, and commit both changes:
-
-```bash
-python3 scripts/validate.py          # checks columns, tags, years, duplicate entries
-python3 scripts/generate_readme.py   # rewrites README.md from data/ + README.template.md
-```
-
-Both use only the Python standard library.
-
-The catalog is data rather than prose so that it stays maintainable. Lists like this usually die because updating them means hand-editing a large markdown file, and that gets tedious around the two hundredth entry. Here a contribution is one CSV row.
-
-## Related lists
+## Elsewhere
 
 - [Awesome-Image-Quality-Assessment](https://github.com/chaofengc/Awesome-Image-Quality-Assessment), the reference IQA list, paired with the [IQA-PyTorch](https://github.com/chaofengc/IQA-PyTorch) toolbox
 - [Awesome-High-Dynamic-Range-Imaging](https://github.com/rebeccaeexu/Awesome-High-Dynamic-Range-Imaging), HDR reconstruction and imaging

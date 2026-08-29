@@ -53,7 +53,7 @@ Leave a field blank rather than guessing. An empty cell is honest; an invented n
 
 ### Tag vocabulary
 
-Primary, shown as coloured emoji in the tables: 🔴 `HDR`  🟢 `UGC`  🟣 `VQA`  🔵 `IQA`
+Primary, shown as coloured badges in the tables: `HDR` `UGC` `VQA` `IQA`
 
 Modifiers: `FR` `NR` `RR` `PU` `CLASSICAL` `DEEP` `CLIP` `TRANSFORMER` `MLLM` `RL` `REASONING` `BENCHMARK` `SYNTHETIC` `AUTHENTIC` `AIGC` `AESTHETIC` `STREAMING` `GAMING` `COMPRESSION`
 
@@ -61,9 +61,11 @@ Modifiers: `FR` `NR` `RR` `PU` `CLASSICAL` `DEEP` `CLIP` `TRANSFORMER` `MLLM` `R
 
 ### Categories
 
-`data/methods.csv`: `hdr`, `vqa`, `nr-iqa`, `fr-iqa`, `mllm` (tables render in that order)
+`data/methods.csv`: `mllm`, `hdr`, `vqa`, `nr-iqa`, `fr-iqa` (tables render in that order)
 
-`data/datasets.csv`: `hdr`, `video`, `image` (tables render in that order)
+`data/datasets.csv`: `aigc`, `hdr`, `video`, `image` (tables render in that order)
+
+Use `aigc` for subjective data on generated output, whatever the modality. Otherwise pick by content type.
 
 A paper sits in exactly one category, the table where a reader would look for it first. Cross-cutting membership is what tags are for: an HDR video quality model belongs in `hdr` with tags `HDR VQA`.
 
