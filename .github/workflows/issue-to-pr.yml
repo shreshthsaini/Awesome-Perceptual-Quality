@@ -29,14 +29,21 @@ jobs:
         with:
           python-version: "3.11"
 
-      - name: Skip if this issue already has a pull request
+      - name: Skip if this issue has already been handled
         id: existing
         env:
           GH_TOKEN: ${{ github.token }}
+          ISSUE: ${{ github.event.issue.number }}
         run: |
-          BRANCH="issue-${{ github.event.issue.number }}-catalog"
-          if git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
-            echo "branch $BRANCH already exists, nothing to do"
+          # Look for a pull request that references this issue in ANY state.
+          # Checking for the branch is not enough: the first run merges and then
+          # deletes it, so a second run would find nothing and duplicate the work.
+          FOUND=$(gh pr list --state all --limit 50 \
+                    --json number,body \
+                    --jq "[.[] | select(.body | test(\"Closes #${ISSUE}\\\\b\"))] | length")
+          BRANCH="issue-${ISSUE}-catalog"
+          if [ "${FOUND:-0}" -gt 0 ] || git ls-remote --exit-code --heads origin "$BRANCH" >/dev/null 2>&1; then
+            echo "issue #${ISSUE} already has a pull request, nothing to do"
             echo "skip=true" >> "$GITHUB_OUTPUT"
           else
             echo "skip=false" >> "$GITHUB_OUTPUT"
